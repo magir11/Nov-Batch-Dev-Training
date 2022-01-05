@@ -1,0 +1,17 @@
+trigger PermissionSetTrigger on User (before insert,before update,After insert, After update) {
+        if(Trigger.isbefore && Trigger.isupdate){
+    		
+            set<ID> uId = new Set<Id>();
+            Profile Marketingprofile = [Select id, name from profile where name = 'Custom: Marketing Profile' Limit 1];
+    
+            for(User user : Trigger.new){
+            	if(user.profileId == Marketingprofile.Id)
+                {
+                    uId.add(user.id);
+                }
+    
+    }
+        PermissionSetsHandler.PermissionSetAssign(uId);
+    }
+
+}
